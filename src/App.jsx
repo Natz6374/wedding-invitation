@@ -111,7 +111,7 @@ function Rsvp(){
 
 export default function App(){
  const [p,setP]=useState(0),[opened,setOpened]=useState(false),[playing,setPlaying]=useState(false),cd=useCountdown();
- const audio=useRef(),lock=useRef(0),ts=useRef(0),pages=useRef([]);
+ const audio=useRef(),lock=useRef(0),ts=useRef({x:0,y:0,target:null}),pages=useRef([]);
  const go=useCallback(d=>{const now=Date.now();if(now-lock.current<900)return;lock.current=now;setP(v=>Math.min(LAST,Math.max(0,v+d)))},[]);
  const start=()=>{setTimeout(()=>setOpened(true),1600);audio.current?.play().then(()=>setPlaying(true)).catch(()=>{})};
  const toggle=()=>{if(playing){audio.current.pause();setPlaying(false)}else audio.current.play().then(()=>setPlaying(true)).catch(()=>{})};
@@ -119,7 +119,15 @@ export default function App(){
  useEffect(()=>{if(!opened)return;
   const wh=e=>{if(Math.abs(e.deltaY)<20||canScroll(e.deltaY))return;go(e.deltaY>0?1:-1)};
   const kd=e=>{if(e.target.matches('input,textarea'))return;if(['ArrowDown','ArrowRight','PageDown'].includes(e.key))go(1);if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key))go(-1)};
-  const td=e=>{ts.current=e.touches[0].clientY},tu=e=>{const d=ts.current-e.changedTouches[0].clientY;if(Math.abs(d)>55&&!canScroll(d))go(d>0?1:-1)};
+  const td=e=>{const touch=e.touches[0];ts.current={x:touch.clientX,y:touch.clientY,target:e.target}};
+  const tu=e=>{
+   const touch=e.changedTouches[0],dx=ts.current.x-touch.clientX,d=ts.current.y-touch.clientY;
+   if(Math.abs(d)>55){if(!canScroll(d))go(d>0?1:-1);return}
+   if(Math.max(Math.abs(dx),Math.abs(d))>12||!matchMedia('(max-width: 700px)').matches)return;
+   const target=ts.current.target;
+   if(target instanceof Element&&target.closest('button,a,input,textarea,select,[role="button"]'))return;
+   if(pages.current[p]?.contains(target))go(1);
+  };
   addEventListener('wheel',wh,{passive:true});addEventListener('keydown',kd);addEventListener('touchstart',td,{passive:true});addEventListener('touchend',tu,{passive:true});
   return()=>{removeEventListener('wheel',wh);removeEventListener('keydown',kd);removeEventListener('touchstart',td);removeEventListener('touchend',tu)}},[opened,go,p]);
  const cal=()=>window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Wedding of Dr. R. Adolph Rijo & Dr. T.A. Jenisha')+'&dates=20261130T043000Z/20261130T063000Z&location='+encodeURIComponent("St. Antony's Church, Mullanganavilai"),'_blank');
@@ -161,14 +169,14 @@ export default function App(){
     <p className="family-foot a" style={{'--i':6}}>Your presence and prayers will make our joy complete.</p>
    </div></section>
    <section ref={R(3)} className={cls(3)} aria-hidden={p!==3} inert={p!==3?'':undefined}><div className="c wide events-page">
-    <p className="eyebrow a">29 &amp; 30 NOVEMBER · A CELEBRATION OF LOVE</p><h2 className="script a" style={{'--i':1}}>Our two days of joy</h2><p className="a event-intro" style={{'--i':1}}>The celebrations · Find your way to us</p>
+    <p className="eyebrow a">A CELEBRATION OF LOVE</p><h2 className="script a" style={{'--i':1}}>Our two days of joy</h2><p className="a event-intro" style={{'--i':1}}>The celebrations · Find your way to us</p>
     <div className="event-grid">{EVENTS.map((e,k)=><article className="event-card a" key={e.title} style={{'--i':k+2}}><div className="event-top"><span className="event-number">0{k+1}</span><Iso k={e.icon}/></div><p className="eyebrow">{e.day}</p><h3>{e.title}</h3><p className="event-time">{e.time}</p><div className="event-rule"/><p className="event-place">{e.place}</p>{e.note&&<p className="detail officiant">{e.note}</p>}<div className="directions"><QR q={e.map}/><a className="map-link" href={'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.map)} target="_blank" rel="noreferrer">Get directions ↗<small>Tap or scan to find us</small></a></div></article>)}</div>
     <button className="btn ghost a" style={{'--i':5}} onClick={cal}>♡ Save the wedding date</button>
    </div></section>
    <section ref={R(4)} className={cls(4)} aria-hidden={p!==4} inert={p!==4?'':undefined}><div className="c wide"><p className="eyebrow a">THE LITTLE MOMENTS, THE LIFELONG MEMORIES</p><h2 className="script a" style={{'--i':1}}>Our story in moments</h2><div className="a" style={{'--i':2}}><Coverflow/></div><p className="detail">A little glimpse of us, before forever.</p></div></section>
    <section ref={R(5)} className={cls(5)} aria-hidden={p!==5} inert={p!==5?'':undefined}><div className="c wide finale">
     <div className="rsvp-panel"><p className="eyebrow a">A SEAT SAVED, A MEMORY WAITING</p><h2 className="script a" style={{'--i':1}}>Will you join us?</h2><p className="a" style={{'--i':1}}>Our day would be lovelier with you in it.</p><Rsvp/></div>
-    <div className="closing a" style={{'--i':3}}><span className="closing-heart">♡</span><h3>See you on the<br/><em>happiest day.</em></h3><p className="eyebrow">WITH BEST COMPLIMENTS FROM</p><p className="compliments">Dr. R. Alen Rinisha,<br/>Dr. S. Boffin Steeve &amp; Family</p><a className="contact" href="tel:+919443581454">Contact · 9443581454</a><button className="restart" onClick={()=>setP(0)}>Read our invitation again ↺</button></div>
+    <div className="closing a" style={{'--i':3}}><span className="closing-heart">♡</span><h3>See you on the<br/><em>happiest day.</em></h3><p className="eyebrow">WITH BEST COMPLIMENTS FROM</p><p className="compliments">Dr. R. Alen Rinisha,<br/>Dr. S. Boffin Steeve &amp; Family</p><a className="contact" href="tel:+919384589330">Contact · +91 93845 89330</a><button className="restart" onClick={()=>setP(0)}>Read our invitation again ↺</button></div>
    </div></section>
   </main>
  </div>;
