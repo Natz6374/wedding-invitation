@@ -12,4 +12,5 @@ app.get('/api/rsvps',(q,r)=>{if(q.query.key!==(process.env.ADMIN_KEY||'adolph-je
  r.json(fs.existsSync(rsvpFile)?JSON.parse(fs.readFileSync(rsvpFile)):[])});
 app.use(express.static(path.join(root,'dist')));app.use(express.static(path.join(root,'public')));
 app.get('*',(q,r)=>{const f=path.join(root,'dist/index.html');fs.existsSync(f)?r.sendFile(f):r.send('Run npm run build')});
-app.listen(5000,()=>console.log('http://localhost:5000'));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log('Running on port ' + PORT));
