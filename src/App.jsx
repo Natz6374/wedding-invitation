@@ -1,17 +1,12 @@
 import QRCode from 'qrcode';
 import React,{useCallback,useEffect,useRef,useState} from 'react';
-import HeartCard from './HeartCard.jsx';
 
 const WEDDING=new Date('2026-11-30T10:00:00+05:30');
 const EVENTS=[
  {day:'Sun, 29 Nov 2026',time:'5:00 pm',title:'Engagement',place:'CSI Community Hall, Karunkal',map:'CSI Community Hall Karunkal',icon:'ring'},
  {day:'Mon, 30 Nov 2026',time:'10:00 am',title:'Wedding Ceremony',place:"St. Antony’s Church, Mullanganavilai",note:'Solemnized by Most. Rev. Dr. Albert G.A. Annasdas, Diocese of Kuzhithurai',map:'St Antony Church Mullanganavilai',icon:'church'},
  {day:'Mon, 30 Nov 2026',time:'5:00 pm',title:'Reception',place:'J.C. Grand Community Hall, Puthankadai, Thiruvattar',map:'JC Grand Community Hall Thiruvattar',icon:'toast'}];
-const BLESSINGS=['Most. Rev. Dr. வின்சென்ட் மார் பவுலோஸ்','Most. Rev. யூகானோன் மார் கிறிஸோஸ்டோம்','Most. Rev. மார் ஜார்ஜ் ராஜேந்திரன்','Most. Rev. Dr. நசரேன் சூசை','Rt. Rev. Dr. S. கிறிஸ்டோபர் விஜயன்','Rev. I. வினில் சதீஷ்','Most. Rev. மரிய ராஜ்','Most. Rev. சுந்தர் சிங்','Rev. Dr. K. சுந்தர் ராஜ்','Rev. சத்திய நாதன்','Commissioner. லால்மிங்லியானா','Bishop. சாது டேனியல்','Rt. Rev. A.R. செல்லையா'];
-const LAST=11, THEME=[0,0,1,1,2,2,3,3,4,4,4,5];
-const PHOTO=['/venues/karunkal.jpg','/venues/church.jpg','/venues/thiruvattar.jpg'];
-const AT=['2026-11-29T17:00+05:30','2026-11-30T10:00+05:30','2026-11-30T17:00+05:30'].map(d=>new Date(d));
-
+const LAST=5, THEME=[0,1,2,3,0,5];
 function useCountdown(){
  const [t,setT]=useState(()=>WEDDING-Date.now());
  useEffect(()=>{const i=setInterval(()=>setT(WEDDING-Date.now()),1000);return()=>clearInterval(i)},[]);
@@ -76,21 +71,17 @@ function QR({q}){const [s,setS]=useState('');
  useEffect(()=>{QRCode.toString('https://www.google.com/maps/search/'+encodeURIComponent(q),{type:'svg',margin:1,color:{dark:'#3a1224',light:'#0000'}}).then(setS)},[q]);
  return <div className="qr" dangerouslySetInnerHTML={{__html:s}} aria-label={'QR code for '+q}/>}
 
-function Live(){
- const [n,setN]=useState(Date.now());useEffect(()=>{const i=setInterval(()=>setN(Date.now()),30000);return()=>clearInterval(i)},[]);
- return <ol className="path live">{EVENTS.map((e,k)=>{const st=n<AT[k]?'soon':n<AT[k].getTime()+4*36e5?'now':'done';
-  return <li key={k} className={st}><span><Iso k={e.icon}/></span><div><b>{e.time}</b> {e.title}<small>{st==='now'?'Happening now ♥':st==='done'?'Celebrated with love':e.day}</small></div></li>})}</ol>}
-
 function Gates({onOpen}){
  const [o,setO]=useState(false);
- const open=()=>{if(!o){setO(true);onOpen()}};
- return <div className={'gates'+(o?' open':'')} onClick={open} role="button" tabIndex={0} onKeyDown={e=>e.key==='Enter'&&open()} aria-label="Open the invitation">
+ return <div className={'gates'+(o?' open':'')}>
   <div className="door dl"/><div className="door dr"/>
-  <div className="crest"><div className="ring"/><div className="ring r2"/><span>A<i>♥</i>J</span><p>Tap to open our invitation</p></div>
+  <button className="seal" disabled={o} onClick={()=>{setO(true);onOpen()}} aria-label="Open wedding invitation">
+   <span className="eyebrow">A LETTER OF LOVE</span><span className="seal-monogram">A <i>&</i> J</span>
+   <span className="seal-heart">♥</span><strong>Some days change everything.</strong><span>We would love to share ours with you.</span>
+   <span className="open-label">OPEN OUR INVITATION <b>↗</b></span><small>30 NOVEMBER 2026</small>
+  </button>
  </div>;
 }
-
-function Cube(){return <div className="iso-scene" aria-hidden="true"><div className="cube">{['A','♥','J','2026','30','Nov'].map((f,i)=><div key={i} className={'face f'+i}>{f}</div>)}</div><div className="shadow"/></div>}
 
 function Coverflow(){
  const [imgs,setImgs]=useState([]),[i,setI]=useState(0),t0=useRef(0);
@@ -101,21 +92,21 @@ function Coverflow(){
  return <div className="flow" onPointerDown={e=>t0.current=e.clientX} onPointerUp={e=>{const d=e.clientX-t0.current;if(Math.abs(d)>40)step(d<0?1:-1)}} onTouchStart={e=>e.stopPropagation()} onTouchEnd={e=>e.stopPropagation()}>
   {s.map((m,k)=>{let o=k-i;if(o>s.length/2)o-=s.length;if(o<-s.length/2)o+=s.length;
    return <figure key={k} className="frame" style={{transform:`translateX(${o*58}%) translateZ(${-Math.abs(o)*140}px) rotateY(${-o*38}deg)`,opacity:Math.abs(o)>2?0:1-Math.abs(o)*.25,zIndex:9-Math.abs(o)}} onClick={()=>setI(k)}>
-    {imgs.length?<img src={m} alt={`Adolph and Jenisha ${k+1}`} draggable="false"/>:<div className="ph"><b>♥</b><em>{m}</em><small>Add photos to public/photos</small></div>}</figure>})}
+    {imgs.length?<img src={m} alt={`Adolph and Jenisha ${k+1}`} draggable="false"/>:<div className="ph"><b>♥</b><em>{m}</em><small>Dr. Adolph &amp; Dr. Jenisha</small></div>}</figure>})}
   <button className="fn l" onClick={()=>step(-1)} aria-label="Previous photo">‹</button><button className="fn r" onClick={()=>step(1)} aria-label="Next photo">›</button>
  </div>;
 }
 
 function Rsvp(){
  const [f,setF]=useState({name:'',guests:1,attending:true,message:''}),[st,setSt]=useState('');
- const send=async()=>{try{const r=await fetch('/api/rsvp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(f)});setSt(r.ok?'sent':'Please enter your name.')}catch{setSt('Could not send. Please try again.')}};
+ const send=async()=>{if(st==='sending')return;if(!f.name.trim()){setSt('Please enter your name.');return}setSt('sending');try{const r=await fetch('/api/rsvp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(f)});setSt(r.ok?'sent':'Please enter your name.')}catch{setSt('Could not send. Please try again.')}};
  if(st==='sent')return <p className="thanks">Thank you, {f.name}.<br/>{f.attending?'We can’t wait to celebrate with you. 💖':'You will be in our hearts on the day.'}</p>;
  return <div className="rsvp a" style={{'--i':2}}>
-  <input placeholder="Your name" value={f.name} onChange={e=>setF({...f,name:e.target.value})}/>
+  <input aria-label="Your name" autoComplete="name" maxLength="80" placeholder="Your name" value={f.name} onChange={e=>setF({...f,name:e.target.value})}/>
   <div className="row"><label>Guests <input type="number" min="1" max="10" value={f.guests} onChange={e=>setF({...f,guests:e.target.value})}/></label>
    <label><input type="checkbox" checked={f.attending} onChange={e=>setF({...f,attending:e.target.checked})}/> I will attend</label></div>
-  <textarea rows="2" placeholder="A wish for the couple" value={f.message} onChange={e=>setF({...f,message:e.target.value})}/>
-  <button className="btn" onClick={send}>Send with love</button>{st&&<small className="err">{st}</small>}</div>;
+  <textarea aria-label="A wish for the couple" maxLength="300" rows="2" placeholder="A wish for the couple" value={f.message} onChange={e=>setF({...f,message:e.target.value})}/>
+  <button className="btn" disabled={st==='sending'} onClick={send}>{st==='sending'?'Sending…':'Send with love'}</button>{st&&st!=='sending'&&<small className="err" role="status">{st}</small>}</div>;
 }
 
 export default function App(){
@@ -131,11 +122,11 @@ export default function App(){
   const td=e=>{ts.current=e.touches[0].clientY},tu=e=>{const d=ts.current-e.changedTouches[0].clientY;if(Math.abs(d)>55&&!canScroll(d))go(d>0?1:-1)};
   addEventListener('wheel',wh,{passive:true});addEventListener('keydown',kd);addEventListener('touchstart',td,{passive:true});addEventListener('touchend',tu,{passive:true});
   return()=>{removeEventListener('wheel',wh);removeEventListener('keydown',kd);removeEventListener('touchstart',td);removeEventListener('touchend',tu)}},[opened,go,p]);
- const cal=()=>window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Wedding of Adolph & Jenisha')+'&dates=20261130T043000Z/20261130T063000Z&location='+encodeURIComponent("St. Antony's Church, Mullanganavilai"),'_blank');
+ const cal=()=>window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Wedding of Dr. R. Adolph Rijo & Dr. T.A. Jenisha')+'&dates=20261130T043000Z/20261130T063000Z&location='+encodeURIComponent("St. Antony's Church, Mullanganavilai"),'_blank');
  const cls=i=>'page'+(i===p?' on':i<p?' past':' next'), R=i=>el=>{pages.current[i]=el};
 
  return <div className="stage" data-t={THEME[p]}>
-  <audio ref={audio} src="/audio/song.mp3.mp3" loop preload="auto"/>
+  <audio ref={audio} src="/audio/song.mp3" loop preload="auto"/>
   {[0,1,2,3,4,5].map(i=><div key={i} className={'bg b'+i+(THEME[p]===i?' show':'')}/>)}
   <div className="aurora" aria-hidden="true"><i/><i/><i/></div>
   <Magic page={p}/>
@@ -145,73 +136,40 @@ export default function App(){
   <button className="music" onClick={toggle} aria-label={playing?'Pause music':'Play music'}>{playing?'♫':'♪'}</button>
   {opened&&p<LAST&&<button className="more" onClick={()=>go(1)} aria-label="Next page"><span>Swipe up</span><i>⌄</i></button>}
 
-  <main>
-   <section ref={R(0)} className={cls(0)}><div className="c">
-    <p className="a script sm" style={{'--i':0}}>Wedding Invitation</p>
-    <HeartCard className="heart-monogram" style={{'--i':1}} label="A heart J"><span>A</span><i>♥</i><span>J</span></HeartCard>
-    <h1 className="a" style={{'--i':2}}>Adolph <em>&amp;</em> Jenisha</h1>
-    <p className="a cap" style={{'--i':3}}>30 · 11 · 2026</p></div></section>
-
-   <section ref={R(1)} className={cls(1)}><div className="c">
-    <div className="rings a" style={{'--i':0}}><b/><b/></div>
-    <p className="a verse" style={{'--i':1}}>“So they are no longer two, but one flesh. Therefore what God has joined together, let man not separate.”</p>
-    <small className="a" style={{'--i':2}}>Matthew 19:6</small>
-    <p className="a ta" style={{'--i':3}}>இனி அவர்கள் இருவர் அல்ல, ஒரே உடல்; எனவே இறைவன் இணைத்ததை மனிதர் பிரிக்காதிருக்கட்டும் (மத். 19:6)</p></div></section>
-
-   <section ref={R(2)} className={cls(2)}><div className="c">
-    <p className="a script sm" style={{'--i':0}}>Two hearts, one story</p>
-    <Cube/>
-    <h2 className="a nm" style={{'--i':2}}>Dr. R. Adolph Rijo</h2><p className="a w" style={{'--i':3}}>with</p><h2 className="a nm" style={{'--i':4}}>Dr. T.A. Jenisha</h2></div></section>
-
-   <section ref={R(3)} className={cls(3)}><div className="c paper">
-    <h2 className="a script" style={{'--i':0}}>With joy, we invite you</h2>
-    <p className="a" style={{'--i':1}}><b>Er. A. Raj &amp; Mrs. M. Rejini Vijila Bai</b><br/><em>(Ex. Presidents, Kannanoor Panchayat)</em><br/>8-36, Raj Bhavan, Paravakkattuvilai, Mekkamandapam Post.</p>
-    <p className="a" style={{'--i':2}}>cordially solicit your esteemed presence and prayers with family on this auspicious occasion of the wedding of their son</p>
-    <p className="a nm sm2" style={{'--i':3}}>Dr. R. Adolph Rijo</p><p className="a w" style={{'--i':3}}>with</p><p className="a nm sm2" style={{'--i':4}}>Dr. T.A. Jenisha</p>
-    <p className="a" style={{'--i':5}}>D/o <b>Mr. R. Thomson &amp; Mrs. S. Anitha</b><br/>15/47A, Amalorpavapuram, Mangarai Post.</p></div></section>
-
-   <section ref={R(4)} className={cls(4)}><div className="c">
-    <h2 className="a script" style={{'--i':0}}>Counting every heartbeat</h2>
-    {cd.done?<><p className="thanks">Today is the day 💖</p><Live/></>:<div className="clock">{cd.list.map(([k,v,m],i)=><div className="dial a" style={{'--i':i+1}} key={k}>
-     <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle className="v" cx="50" cy="50" r="44" style={{strokeDashoffset:276*(1-v/m)}}/></svg><b key={v}>{String(v).padStart(2,'0')}</b><span>{k}</span></div>)}</div>}
-    <p className="a cap" style={{'--i':5}}>until Monday, 30 November 2026 · 10:00 am</p>
-    <button className="btn ghost a" style={{'--i':6}} onClick={cal}>Save the date</button></div></section>
-
-   <section ref={R(5)} className={cls(5)}><div className="c wide">
-    <h2 className="a script" style={{'--i':0}}>Our story in moments</h2><div className="a" style={{'--i':1}}><Coverflow/></div></div></section>
-
-   <section ref={R(6)} className={cls(6)}><div className="c wide">
-    <h2 className="a script" style={{'--i':0}}>The celebrations</h2>
-    <div className="iso">{EVENTS.map((e,k)=><article key={k} className="tile a" style={{'--i':k+1,'--d':k}}>
-     <div className="slab"><Iso k={e.icon}/></div><h3>{e.title}</h3><p className="when">{e.day} · {e.time}</p><p>{e.place}</p>{e.note&&<p className="note">{e.note}</p>}
-     <a href={'https://www.google.com/maps/search/'+encodeURIComponent(e.map)} target="_blank" rel="noreferrer">Open in Maps</a></article>)}</div></div></section>
-
-   <section ref={R(7)} className={cls(7)}><div className="c wide">
-    <h2 className="a script" style={{'--i':0}}>Find your way to us</h2>
-    <div className="venues">{EVENTS.map((e,k)=><article key={k} className="venue a" style={{'--i':k+1}}>
-     <div className="vph"><img src={PHOTO[k]} alt="" onError={ev=>ev.target.remove()}/><span><Iso k="heart"/></span></div>
-     <h3>{e.place.split(',')[0]}</h3><small>{e.place.split(',').slice(1).join(',')}</small><QR q={e.map}/><p>Scan for directions</p></article>)}</div></div></section>
-
-   <section ref={R(8)} className={cls(8)}><div className="c">
-    <h2 className="a script" style={{'--i':0}}>Our two days of joy</h2>
-    <ol className="path">{EVENTS.map((e,k)=><li key={k} className="a" style={{'--i':k+1}}><span><Iso k={e.icon}/></span><div><b>{e.time}</b> {e.title}<small>{e.day}</small></div></li>)}</ol></div></section>
-
-   <section ref={R(9)} className={cls(9)}><div className="c paper">
-    <h2 className="a script" style={{'--i':0}}>Blessed by</h2>
-    <p className="a ta" style={{'--i':1}}>நிச்சயதார்த்தம் மற்றும் மணமக்களை வாழ்த்தி ஆசீர்வதிப்பவர்கள்</p>
-    <ul>{BLESSINGS.map((b,k)=><li key={b} className="a" style={{'--i':Math.min(k,8)*.4+2}}>{b}</li>)}</ul>
-    <p className="a ta" style={{'--i':6}}>அருட்பணியாளர்கள், போதகர்கள், அரசியல் பிரமுகர்கள், உறவுகள் &amp; நண்பர்கள்</p></div></section>
-
-   <section ref={R(10)} className={cls(10)}><div className="c">
-    <h2 className="a script" style={{'--i':0}}>Will you join us?</h2><p className="a" style={{'--i':1}}>Let the couple know you are coming.</p><Rsvp/></div></section>
-
-   <section ref={R(11)} className={cls(11)}><div className="c">
-    <div className="bigiso a" style={{'--i':0}}><Iso k="heart"/></div>
-    <h2 className="a script" style={{'--i':1}}>See you on the happiest day</h2>
-    <p className="a cap" style={{'--i':2}}>With best compliments from</p>
-    <p className="a nm sm2" style={{'--i':3}}>Dr. R. Alen Rinisha, Dr. S. Boffin Steeve &amp; Family</p>
-    <small className="a" style={{'--i':4}}>Contact · 9443581454</small>
-    <button className="btn ghost a" style={{'--i':5}} onClick={()=>setP(0)}>Begin again</button></div></section>
+  {opened&&<nav className="slide-nav" aria-label="Invitation slides"><button disabled={p===0} onClick={()=>go(-1)} aria-label="Previous slide">←</button>{['Invitation','Our blessing','With joy','Celebrations','Our moments','Join us'].map((label,i)=><button key={label} className={p===i?'selected':''} aria-label={label} aria-current={p===i?'step':undefined} onClick={()=>setP(i)}><span>{String(i+1).padStart(2,'0')}</span><small>{label}</small></button>)}<button disabled={p===LAST} onClick={()=>go(1)} aria-label="Next slide">→</button></nav>}
+  <main aria-label="Wedding invitation" inert={!opened?'':undefined}>
+   <section ref={R(0)} className={cls(0)} aria-hidden={p!==0} inert={p!==0?'':undefined}><div className="c cover">
+    <p className="eyebrow a">TOGETHER, BY GOD’S GRACE</p><h1 className="a" style={{'--i':1}}>Wedding Invitation</h1>
+    <div className="linked-hearts a" style={{'--i':2}} aria-hidden="true"><span>♡</span><span>♡</span></div>
+    <p className="script tagline a" style={{'--i':2}}>Two hearts, one story</p>
+    <div className="couple a" style={{'--i':3}}><h2><small>Dr. R.</small> Adolph Rijo</h2><em>&</em><h2><small>Dr. T.A.</small> Jenisha</h2></div>
+    <div className="date-ribbon a" style={{'--i':4}}>MONDAY <b>30</b> NOVEMBER <span>2026</span></div>
+    <p className="a cover-note" style={{'--i':5}}>A lifetime of love begins with a day shared with you.</p><button className="btn a" style={{'--i':6}} onClick={()=>go(1)}>Our invitation <span>→</span></button>
+   </div></section>
+   <section ref={R(1)} className={cls(1)} aria-hidden={p!==1} inert={p!==1?'':undefined}><div className="c blessing">
+    <p className="eyebrow a">UNITED IN FAITH · BOUND BY LOVE</p><div className="rings a" style={{'--i':1}}><b/><b/></div>
+    <blockquote className="verse a" style={{'--i':2}}>“So they are no longer two, but one flesh. Therefore what God has joined together, let man not separate.”</blockquote>
+    <p className="eyebrow a" style={{'--i':3}}>MATTHEW 19:6</p><div className="ornament">✦</div>
+    <p className="ta a" lang="ta" style={{'--i':4}}>இனி அவர்கள் இருவர் அல்ல, ஒரே உடல்; எனவே இறைவன் இணைத்ததை மனிதர் பிரிக்காதிருக்கட்டும் (மத். 19:6)</p>
+   </div></section>
+   <section ref={R(2)} className={cls(2)} aria-hidden={p!==2} inert={p!==2?'':undefined}><div className="c paper family">
+    <p className="eyebrow a">WITH OUR FAMILIES, WITH ALL OUR LOVE</p><h2 className="script a" style={{'--i':1}}>With joy, we invite you</h2>
+    <p className="parents a" style={{'--i':2}}>Er. A. Raj &amp; Mrs. M. Rejini Vijila Bai</p><p className="detail a" style={{'--i':2}}>Ex. Presidents, Kannanoor Panchayat<br/>8-36, Raj Bhavan, Paravakkattuvilai, Mekkamandapam Post.</p>
+    <p className="invite-copy a" style={{'--i':3}}>Together with their family, cordially invite you and your loved ones to bless the wedding of their son</p>
+    <div className="family-names a" style={{'--i':4}}><h3>Dr. R. Adolph Rijo</h3><span>with</span><h3>Dr. T.A. Jenisha</h3></div>
+    <p className="a detail" style={{'--i':5}}>Daughter of</p><p className="parents a" style={{'--i':5}}>Mr. R. Thomson &amp; Mrs. S. Anitha</p><p className="detail a" style={{'--i':5}}>15/47A, Amalorpavapuram, Mangarai Post.</p>
+    <p className="family-foot a" style={{'--i':6}}>Your presence and prayers will make our joy complete.</p>
+   </div></section>
+   <section ref={R(3)} className={cls(3)} aria-hidden={p!==3} inert={p!==3?'':undefined}><div className="c wide events-page">
+    <p className="eyebrow a">29 &amp; 30 NOVEMBER · A CELEBRATION OF LOVE</p><h2 className="script a" style={{'--i':1}}>Our two days of joy</h2><p className="a event-intro" style={{'--i':1}}>The celebrations · Find your way to us</p>
+    <div className="event-grid">{EVENTS.map((e,k)=><article className="event-card a" key={e.title} style={{'--i':k+2}}><div className="event-top"><span className="event-number">0{k+1}</span><Iso k={e.icon}/></div><p className="eyebrow">{e.day}</p><h3>{e.title}</h3><p className="event-time">{e.time}</p><div className="event-rule"/><p className="event-place">{e.place}</p>{e.note&&<p className="detail officiant">{e.note}</p>}<div className="directions"><QR q={e.map}/><a className="map-link" href={'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.map)} target="_blank" rel="noreferrer">Get directions ↗<small>Tap or scan to find us</small></a></div></article>)}</div>
+    <button className="btn ghost a" style={{'--i':5}} onClick={cal}>♡ Save the wedding date</button>
+   </div></section>
+   <section ref={R(4)} className={cls(4)} aria-hidden={p!==4} inert={p!==4?'':undefined}><div className="c wide"><p className="eyebrow a">THE LITTLE MOMENTS, THE LIFELONG MEMORIES</p><h2 className="script a" style={{'--i':1}}>Our story in moments</h2><div className="a" style={{'--i':2}}><Coverflow/></div><p className="detail">A little glimpse of us, before forever.</p></div></section>
+   <section ref={R(5)} className={cls(5)} aria-hidden={p!==5} inert={p!==5?'':undefined}><div className="c wide finale">
+    <div className="rsvp-panel"><p className="eyebrow a">A SEAT SAVED, A MEMORY WAITING</p><h2 className="script a" style={{'--i':1}}>Will you join us?</h2><p className="a" style={{'--i':1}}>Our day would be lovelier with you in it.</p><Rsvp/></div>
+    <div className="closing a" style={{'--i':3}}><span className="closing-heart">♡</span><h3>See you on the<br/><em>happiest day.</em></h3><p className="eyebrow">WITH BEST COMPLIMENTS FROM</p><p className="compliments">Dr. R. Alen Rinisha,<br/>Dr. S. Boffin Steeve &amp; Family</p><a className="contact" href="tel:+919443581454">Contact · 9443581454</a><button className="restart" onClick={()=>setP(0)}>Read our invitation again ↺</button></div>
+   </div></section>
   </main>
  </div>;
 }
