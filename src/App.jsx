@@ -76,7 +76,7 @@ function Gates({onOpen}){
  return <div className={'gates'+(o?' open':'')}>
   <div className="door dl"/><div className="door dr"/>
   <button className="seal" disabled={o} onClick={()=>{setO(true);onOpen()}} aria-label="Open wedding invitation">
-   <span className="eyebrow">A LETTER OF LOVE</span><span className="seal-monogram">A <i>&</i> J</span>
+   <span className="eyebrow">A LETTER OF LOVE</span><img className="seal-monogram" src="/images/couple-monogram.png" alt="Adolph and Jenisha's floral monogram"/>
    <span className="seal-heart">♥</span><strong>Some days change everything.</strong><span>We would love to share ours with you.</span>
    <span className="open-label">OPEN OUR INVITATION <b>↗</b></span><small>30 NOVEMBER 2026</small>
   </button>
