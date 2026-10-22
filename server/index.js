@@ -1,0 +1,15 @@
+import express from 'express';import fs from 'fs';import path from 'path';import {fileURLToPath} from 'url';
+const __d=path.dirname(fileURLToPath(import.meta.url)),root=path.join(__d,'..'),app=express(),rsvpFile=path.join(__d,'rsvps.json');
+app.use(express.json());
+app.get('/api/photos',(q,r)=>{const d=path.join(root,'public/photos');
+ r.json(fs.existsSync(d)?fs.readdirSync(d).filter(f=>/\.(jpe?g|png|webp)$/i.test(f)).map(f=>'/photos/'+f):[])});
+app.post('/api/rsvp',(q,r)=>{const{name,guests,attending,message}=q.body||{};
+ if(!name||!String(name).trim())return r.status(400).json({error:'Name is required'});
+ const all=fs.existsSync(rsvpFile)?JSON.parse(fs.readFileSync(rsvpFile)):[];
+ all.push({name:String(name).slice(0,80),guests:Math.min(+guests||1,10),attending:!!attending,message:String(message||'').slice(0,300),at:new Date().toISOString()});
+ fs.writeFileSync(rsvpFile,JSON.stringify(all,null,2));r.json({ok:true})});
+app.get('/api/rsvps',(q,r)=>{if(q.query.key!==(process.env.ADMIN_KEY||'adolph-jenisha'))return r.sendStatus(401);
+ r.json(fs.existsSync(rsvpFile)?JSON.parse(fs.readFileSync(rsvpFile)):[])});
+app.use(express.static(path.join(root,'dist')));app.use(express.static(path.join(root,'public')));
+app.get('*',(q,r)=>{const f=path.join(root,'dist/index.html');fs.existsSync(f)?r.sendFile(f):r.send('Run npm run build')});
+app.listen(5000,()=>console.log('http://localhost:5000'));
