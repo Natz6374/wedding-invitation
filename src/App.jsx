@@ -2,8 +2,9 @@ import QRCode from 'qrcode';
 import React,{useCallback,useEffect,useRef,useState} from 'react';
 
 const WEDDING=new Date('2026-11-30T10:00:00+05:30');
+const MOMENTS=['/photos/DSC00006.JPG.jpeg','/photos/DSC00421 0001.jpg.jpeg','/photos/DSC01713.JPG.jpeg','/photos/DSC02829.JPG.jpeg'];
 const EVENTS=[
- {day:'Sun, 29 Nov 2026',time:'5:00 pm',title:'Engagement',place:'CSI Community Hall, Karunkal',map:'CSI Community Hall Karunkal',icon:'ring'},
+ {day:'Sun, 29 Nov 2026',time:'5:00 pm',title:'Engagement',place:'CSI Community Hall, Karunkal',note:'Solemnized by Most. Rev. Vincent Mar Paulos, Bishop of the Syro-Malankara Catholic Eparchy of Marthandam.',map:'CSI Community Hall Karunkal',icon:'ring'},
  {day:'Mon, 30 Nov 2026',time:'10:00 am',title:'Wedding Ceremony',place:"St. Antony’s Church, Mullanganavilai",note:'Solemnized by Most. Rev. Dr. Albert G.A. Annasdas, Diocese of Kuzhithurai',map:'St Antony Church Mullanganavilai',icon:'church'},
  {day:'Mon, 30 Nov 2026',time:'5:00 pm',title:'Reception',place:'J.C. Grand Community Hall, Puthankadai, Thiruvattar',map:'JC Grand Community Hall Thiruvattar',icon:'toast'}];
 const LAST=5, THEME=[0,1,2,3,0,5];
@@ -84,15 +85,14 @@ function Gates({onOpen}){
 }
 
 function Coverflow(){
- const [imgs,setImgs]=useState([]),[i,setI]=useState(0),t0=useRef(0);
- useEffect(()=>{fetch('/api/photos').then(r=>r.json()).then(setImgs).catch(()=>{})},[]);
- const s=imgs.length?imgs:['First hello','Our favourite place','The proposal','Forever begins','Hand in hand'];
+ const [i,setI]=useState(0),t0=useRef(0);
+ const s=MOMENTS;
  useEffect(()=>{const t=setInterval(()=>setI(n=>(n+1)%s.length),4200);return()=>clearInterval(t)},[s.length]);
  const step=d=>setI((i+d+s.length)%s.length);
  return <div className="flow" onPointerDown={e=>t0.current=e.clientX} onPointerUp={e=>{const d=e.clientX-t0.current;if(Math.abs(d)>40)step(d<0?1:-1)}} onTouchStart={e=>e.stopPropagation()} onTouchEnd={e=>e.stopPropagation()}>
   {s.map((m,k)=>{let o=k-i;if(o>s.length/2)o-=s.length;if(o<-s.length/2)o+=s.length;
    return <figure key={k} className="frame" style={{transform:`translateX(${o*58}%) translateZ(${-Math.abs(o)*140}px) rotateY(${-o*38}deg)`,opacity:Math.abs(o)>2?0:1-Math.abs(o)*.25,zIndex:9-Math.abs(o)}} onClick={()=>setI(k)}>
-    {imgs.length?<img src={m} alt={`Adolph and Jenisha ${k+1}`} draggable="false"/>:<div className="ph"><b>♥</b><em>{m}</em><small>Dr. Adolph &amp; Dr. Jenisha</small></div>}</figure>})}
+    <img src={m} alt={`Adolph and Jenisha ${k+1}`} draggable="false"/></figure>})}
   <button className="fn l" onClick={()=>step(-1)} aria-label="Previous photo">‹</button><button className="fn r" onClick={()=>step(1)} aria-label="Next photo">›</button>
  </div>;
 }
@@ -155,28 +155,54 @@ export default function App(){
     <p className="a cover-note" style={{'--i':5}}>A lifetime of love begins with a day shared with you.</p><button className="btn a" style={{'--i':6}} onClick={()=>go(1)}>Our invitation <span>→</span></button>
    </div></section>
    <section ref={R(1)} className={cls(1)} aria-hidden={p!==1} inert={p!==1?'':undefined}><div className="c blessing">
-    <p className="eyebrow a">UNITED IN FAITH · BOUND BY LOVE</p><div className="rings a" style={{'--i':1}}><b/><b/></div>
+    <p className="eyebrow blessing-ref a">UNITED IN FAITH · BOUND BY LOVE</p><div className="blessing-rings a" aria-hidden="true" style={{'--i':1}}><svg viewBox="0 0 260 160">
+     <defs>
+      <linearGradient id="iso-gold" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fff1c7"/><stop offset=".25" stopColor="#d6a14e"/><stop offset=".52" stopColor="#fff0bb"/><stop offset=".78" stopColor="#a76d2d"/><stop offset="1" stopColor="#f4d18a"/></linearGradient>
+      <linearGradient id="iso-rose" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#ffe8d7"/><stop offset=".3" stopColor="#c37c64"/><stop offset=".56" stopColor="#f7d0ad"/><stop offset=".8" stopColor="#9b5548"/><stop offset="1" stopColor="#f1c5a5"/></linearGradient>
+      <linearGradient id="iso-diamond" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#fff"/><stop offset=".48" stopColor="#e5f5ff"/><stop offset="1" stopColor="#8bb4d1"/></linearGradient>
+      <filter id="iso-shadow" x="-.3" y="-.4" width="1.6" height="2"><feGaussianBlur stdDeviation="4"/></filter>
+     </defs>
+     <ellipse cx="130" cy="124" rx="72" ry="7" fill="#55332a" opacity=".16" filter="url(#iso-shadow)"/>
+     <g className="iso-ring iso-ring-gold">
+      <ellipse cx="102" cy="94" rx="48" ry="25" fill="none" stroke="#76531f" strokeWidth="17" transform="translate(0 6)"/>
+      <ellipse cx="102" cy="94" rx="48" ry="25" fill="none" stroke="url(#iso-gold)" strokeWidth="14"/>
+      <ellipse cx="102" cy="94" rx="48" ry="25" fill="none" stroke="#fff9df" strokeOpacity=".9" strokeWidth="2.2" strokeDasharray="39 265" strokeDashoffset="-7"/>
+      <ellipse cx="102" cy="94" rx="39" ry="16" fill="none" stroke="#a87531" strokeOpacity=".8" strokeWidth="1.5"/>
+     </g>
+     <g className="iso-ring iso-ring-rose">
+      <ellipse cx="158" cy="94" rx="48" ry="25" fill="none" stroke="#87503d" strokeWidth="18" transform="translate(0 6)"/>
+      <ellipse cx="158" cy="94" rx="48" ry="25" fill="none" stroke="url(#iso-rose)" strokeWidth="14"/>
+      <ellipse cx="158" cy="94" rx="48" ry="25" fill="none" stroke="#fff5e8" strokeOpacity=".95" strokeWidth="2.2" strokeDasharray="45 257" strokeDashoffset="-13"/>
+      <ellipse cx="158" cy="94" rx="39" ry="16" fill="none" stroke="#9c5947" strokeOpacity=".8" strokeWidth="1.5"/>
+     </g>
+     <g className="iso-setting">
+      <path d="m120 69 5-8h27l5 8-18 12Z" fill="#9b692c" stroke="#805423" strokeWidth="1.5"/>
+      <path d="m120 64 9-14h19l9 14-18 11Z" fill="url(#iso-diamond)" stroke="#fff" strokeWidth="2"/>
+      <path d="m129 50 9 5 10-5m-10 5v20m-18-11 18 4 18-4" fill="none" stroke="#a4c5da" strokeWidth="1.5"/>
+      <path d="M125 67h27" stroke="#ffe9b3" strokeWidth="2" strokeLinecap="round"/>
+      <path className="iso-glint" d="m131 37 7-8 7 8" fill="none" stroke="#fff2bb" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+     </g>
+    </svg></div>
     <blockquote className="verse a" style={{'--i':2}}>“So they are no longer two, but one flesh. Therefore what God has joined together, let man not separate.”</blockquote>
-    <p className="eyebrow a" style={{'--i':3}}>MATTHEW 19:6</p><div className="ornament">✦</div>
-    <p className="ta a" lang="ta" style={{'--i':4}}>இனி அவர்கள் இருவர் அல்ல, ஒரே உடல்; எனவே இறைவன் இணைத்ததை மனிதர் பிரிக்காதிருக்கட்டும் (மத். 19:6)</p>
+    <p className="eyebrow verse-ref a" style={{'--i':3}}>MATTHEW <span className="verse-ref-number">19:6</span></p><div className="ornament">✦</div>
+    <p className="ta a" lang="ta" style={{'--i':4}}>இனி அவர்கள் இருவர் அல்ல, ஒரே உடல்; எனவே இறைவன் இணைத்ததை மனிதர் பிரிக்காதிருக்கட்டும் (மத். <span className="verse-ref-number">19:6</span>)</p>
    </div></section>
    <section ref={R(2)} className={cls(2)} aria-hidden={p!==2} inert={p!==2?'':undefined}><div className="c paper family">
     <p className="eyebrow a">WITH OUR FAMILIES, WITH ALL OUR LOVE</p><h2 className="script a" style={{'--i':1}}>With joy, we invite you</h2>
-    <p className="parents a" style={{'--i':2}}>Er. A. Raj &amp; Mrs. M. Rejini Vijila Bai</p><p className="detail a" style={{'--i':2}}>Ex. Presidents, Kannanoor Panchayat<br/>8-36, Raj Bhavan, Paravakkattuvilai, Mekkamandapam Post.</p>
-    <p className="invite-copy a" style={{'--i':3}}>Together with their family, cordially invite you and your loved ones to bless the wedding of their son</p>
-    <div className="family-names a" style={{'--i':4}}><h3>Dr. R. Adolph Rijo</h3><span>with</span><h3>Dr. T.A. Jenisha</h3></div>
-    <p className="a detail" style={{'--i':5}}>Daughter of</p><p className="parents a" style={{'--i':5}}>Mr. R. Thomson &amp; Mrs. S. Anitha</p><p className="detail a" style={{'--i':5}}>15/47A, Amalorpavapuram, Mangarai Post.</p>
-    <p className="family-foot a" style={{'--i':6}}>Your presence and prayers will make our joy complete.</p>
+    <p className="invite-copy a" style={{'--i':2}}>Together with our family,<br/>we cordially invite you and your loved ones<br/>to join us in celebrating the wedding of our beloved son,</p>
+    <div className="family-names stack a" style={{'--i':3}}><h3>Dr. Adolph Rijo</h3><span>with</span><h3>Dr. Jenisha T. A.</h3></div>
+    <p className="a detail" style={{'--i':4}}>Daughter of</p><p className="parents a" style={{'--i':4}}>Mr. R. Thomson &amp; Mrs. S. Anitha</p><p className="detail a" style={{'--i':4}}>Mangarai Post.</p>
+    <p className="family-foot a" style={{'--i':5}}>Your gracious presence and blessings will make this joyous occasion even more special as the couple begins their beautiful journey of togetherness.</p>
    </div></section>
    <section ref={R(3)} className={cls(3)} aria-hidden={p!==3} inert={p!==3?'':undefined}><div className="c wide events-page">
     <p className="eyebrow a">A CELEBRATION OF LOVE</p><h2 className="script a" style={{'--i':1}}>Our two days of joy</h2><p className="a event-intro" style={{'--i':1}}>The celebrations · Find your way to us</p>
-    <div className="event-grid">{EVENTS.map((e,k)=><article className="event-card a" key={e.title} style={{'--i':k+2}}><div className="event-top"><span className="event-number">0{k+1}</span><Iso k={e.icon}/></div><p className="eyebrow">{e.day}</p><h3>{e.title}</h3><p className="event-time">{e.time}</p><div className="event-rule"/><p className="event-place">{e.place}</p>{e.note&&<p className="detail officiant">{e.note}</p>}<div className="directions"><QR q={e.map}/><a className="map-link" href={'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.map)} target="_blank" rel="noreferrer">Get directions ↗<small>Tap or scan to find us</small></a></div></article>)}</div>
+    <div className="event-grid">{EVENTS.map((e,k)=><article className="event-card a" key={e.title} style={{'--i':k+2}}><div className="event-top"><Iso k={e.icon}/></div><p className="eyebrow">{e.day}</p><h3>{e.title}</h3><p className="event-time">{e.time}</p><div className="event-rule"/><p className="event-place">{e.place}</p>{e.note&&<p className="detail officiant">{e.note}</p>}<div className="directions"><QR q={e.map}/><a className="map-link" href={'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.map)} target="_blank" rel="noreferrer">Get directions ↗<small>Tap or scan to find us</small></a></div></article>)}</div>
     <button className="btn ghost a" style={{'--i':5}} onClick={cal}>♡ Save the wedding date</button>
    </div></section>
-   <section ref={R(4)} className={cls(4)} aria-hidden={p!==4} inert={p!==4?'':undefined}><div className="c wide"><p className="eyebrow a">THE LITTLE MOMENTS, THE LIFELONG MEMORIES</p><h2 className="script a" style={{'--i':1}}>Our story in moments</h2><div className="a" style={{'--i':2}}><Coverflow/></div><p className="detail">A little glimpse of us, before forever.</p></div></section>
+   <section ref={R(4)} className={cls(4)} aria-hidden={p!==4} inert={p!==4?'':undefined}><div className="c wide"><p className="eyebrow a">THE LITTLE MOMENTS, THE LIFELONG MEMORIES</p><h2 className="script a" style={{'--i':1}}>Our story in moments</h2><div className="a" style={{'--i':2}}><Coverflow/></div><p className="detail moment-caption">A glimpse of our journey, before forever begins.</p></div></section>
    <section ref={R(5)} className={cls(5)} aria-hidden={p!==5} inert={p!==5?'':undefined}><div className="c wide finale">
-    <div className="rsvp-panel"><p className="eyebrow a">A SEAT SAVED, A MEMORY WAITING</p><h2 className="script a" style={{'--i':1}}>Will you join us?</h2><p className="a" style={{'--i':1}}>Our day would be lovelier with you in it.</p><Rsvp/></div>
-    <div className="closing a" style={{'--i':3}}><span className="closing-heart">♡</span><h3>See you on the<br/><em>happiest day.</em></h3><p className="eyebrow">WITH BEST COMPLIMENTS FROM</p><p className="compliments">Dr. R. Alen Rinisha,<br/>Dr. S. Boffin Steeve &amp; Family</p><a className="contact" href="tel:+919384589330">Contact · +91 93845 89330</a><button className="restart" onClick={()=>setP(0)}>Read our invitation again ↺</button></div>
+    <div className="rsvp-panel"><p className="eyebrow a">A SEAT SAVED, A MEMORY WAITING</p><h2 className="script a" style={{'--i':1}}>Will you join us?</h2><p className="a" style={{'--i':1}}>Our day will be lovelier, and our joy complete, with you by our side.</p><Rsvp/></div>
+    <div className="closing a" style={{'--i':3}}><svg className="closing-heart" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="closing-heart-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f4c2cb"/><stop offset="1" stopColor="#d96f89"/></linearGradient></defs><path d="M50 86C43 80 12 58 12 35 12 20 23 11 36 11c7 0 12 4 14 11 2-7 8-11 15-11 13 0 23 10 23 24 0 23-30 45-38 51Z" fill="url(#closing-heart-fill)" stroke="#f4d5ad" strokeWidth="2.5" strokeLinejoin="round"/><path d="M26 31c1-7 6-11 12-11" fill="none" stroke="#fff7ef" strokeWidth="3" strokeLinecap="round" opacity=".8"/><path d="m50 31 2.6 5.3 5.9.9-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.9-.9Z" fill="#fff7ef" opacity=".85"/></svg><h3>See you on the<br/><em>happiest day.</em></h3><p className="eyebrow">WITH BEST COMPLIMENTS FROM</p><p className="compliments">Dr. R. Alen Rinisha,<br/>Dr. S. Boffin Steeve &amp; Family</p><a className="contact" href="tel:+919384589330">Contact · <span className="contact-number">+91 93845 89330</span></a><button className="restart" onClick={()=>setP(0)}>Read our invitation again ↺</button></div>
    </div></section>
   </main>
  </div>;
