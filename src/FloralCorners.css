@@ -31,7 +31,7 @@
 }
 
 .floral-corners--overlay .floral-corners__cluster--bottom{
-  left:-2%;
+  left:0;
   bottom:0;
   width:min(50vw,460px);
   height:min(31vh,260px);
@@ -82,7 +82,7 @@
 .floral-corners--card .floral-corners__cluster--top .floral-corners__image{object-position:top right}
 .floral-corners--card .floral-corners__cluster--bottom .floral-corners__image{object-position:bottom left}
 .floral-corners--overlay .floral-corners__cluster--top .floral-corners__image{object-position:top right}
-.floral-corners--overlay .floral-corners__cluster--bottom .floral-corners__image{object-fit:cover;object-position:bottom left}
+.floral-corners--overlay .floral-corners__cluster--bottom .floral-corners__image{object-fit:contain;object-position:bottom left}
 
 .floral-corners__content{
   position:relative;
@@ -167,16 +167,16 @@
   }
 
   .floral-corners--overlay .floral-corners__cluster--bottom{
-    width:min(70vw,27vh,340px);
-    height:min(46.7vw,18vh,227px);
+    width:min(58vw,320px);
+    height:min(25vh,180px);
     bottom:0;
   }
 }
 
 @media(max-height:560px){
   .floral-corners--overlay .floral-corners__cluster--bottom{
-    width:min(85vw,34vh,420px);
-    height:min(56.7vw,22vh,230px);
+    width:min(50vw,460px);
+    height:min(31vh,260px);
   }
 }
 
