@@ -1,5 +1,6 @@
 import QRCode from 'qrcode';
 import React,{useCallback,useEffect,useRef,useState} from 'react';
+import FloralCorners from './FloralCorners.jsx';
 
 const WEDDING=new Date('2026-11-30T10:00:00+05:30');
 const MOMENTS=['/photos/DSC00006.JPG.jpeg','/photos/DSC00421 0001.jpg.jpeg','/photos/DSC01713.JPG.jpeg','/photos/DSC02829.JPG.jpeg'];
@@ -7,7 +8,7 @@ const EVENTS=[
  {day:'Sun, 29 Nov 2026',time:'5:00 pm',title:'Engagement',place:'CSI Community Hall, Karunkal',note:'Solemnized by Most. Rev. Vincent Mar Paulos, Diocese of Marthandam.',map:'CSI Community Hall Karunkal',icon:'ring'},
  {day:'Mon, 30 Nov 2026',time:'10:00 am',title:'Wedding Ceremony',place:"St. Antony’s Church, Mullanganavilai",note:'Solemnized by Most. Rev. Dr. Albert G.A. Annasdas, Diocese of Kuzhithurai',map:'St Antony Church Mullanganavilai',icon:'church'},
  {day:'Mon, 30 Nov 2026',time:'5:00 pm',title:'Reception',place:'J.C. Grand Community Hall, Puthankadai, Thiruvattar',map:'JC Grand Community Hall Thiruvattar',icon:'toast'}];
-const LAST=5, THEME=[1,2,1,1,0,5];
+const LAST=5, THEME=[1,1,1,1,1,1];
 function useCountdown(){
  const [t,setT]=useState(()=>WEDDING-Date.now());
  useEffect(()=>{const i=setInterval(()=>setT(WEDDING-Date.now()),1000);return()=>clearInterval(i)},[]);
@@ -136,7 +137,7 @@ export default function App(){
  return <div className="stage" data-t={THEME[p]}>
   <audio ref={audio} src="/audio/song.mp3" loop preload="auto"/>
   {[0,1,2,3,4,5].map(i=><div key={i} className={'bg b'+i+(THEME[p]===i?' show':'')}/>)}
-  <div className="aurora" aria-hidden="true"><i/><i/><i/></div>
+  <FloralCorners variant="overlay"/>
   <Magic page={p}/>
   <div className="prog" style={{transform:`scaleX(${p/LAST})`}}/>
   {!opened&&<Gates onOpen={start}/>}
@@ -172,7 +173,7 @@ export default function App(){
    <section ref={R(2)} className={cls(2)} aria-hidden={p!==2} inert={p!==2?'':undefined}><div className="c paper family">
     <p className="eyebrow a">WITH OUR FAMILIES, WITH ALL OUR LOVE</p><h2 className="script a" style={{'--i':1}}>With joy, we invite you</h2>
     <p className="invite-copy a" style={{'--i':2}}>Together with our family,<br/>we cordially invite you and your loved ones<br/>to join us in celebrating the wedding of our beloved son,</p>
-    <div className="family-names stack a" style={{'--i':3}}><h3>Dr. Adolph Rijo</h3><span>with</span><h3>Dr. Jenisha T. A.</h3></div>
+    <div className="family-names stack a" style={{'--i':3}}><h3>Dr. R. Adolph Rijo</h3><span>with</span><h3>Dr. Jenisha T. A.</h3></div>
     <p className="a detail" style={{'--i':4}}>Daughter of</p><p className="parents a" style={{'--i':4}}>Mr. R. Thomson &amp; Mrs. S. Anitha</p><p className="detail a" style={{'--i':4}}>Mangarai Post.</p>
     <p className="family-foot a" style={{'--i':5}}>Your gracious presence and blessings will make this joyous occasion even more special as the couple begins their beautiful journey of togetherness.</p>
    </div></section>
