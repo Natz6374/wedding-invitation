@@ -82,7 +82,13 @@
 .floral-corners--card .floral-corners__cluster--top .floral-corners__image{object-position:top right}
 .floral-corners--card .floral-corners__cluster--bottom .floral-corners__image{object-position:bottom left}
 .floral-corners--overlay .floral-corners__cluster--top .floral-corners__image{object-position:top right}
-.floral-corners--overlay .floral-corners__cluster--bottom .floral-corners__image{object-fit:contain;object-position:bottom left}
+.floral-corners--overlay .floral-corners__cluster--bottom .floral-corners__image{
+  position:relative;
+  top:4%;
+  object-fit:contain;
+  object-position:bottom left;
+  animation:none;
+}
 
 .floral-corners__content{
   position:relative;
