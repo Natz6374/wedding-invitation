@@ -80,7 +80,7 @@ input,textarea{font:inherit;padding:.75rem 1rem;border:1px solid #c9798a88;borde
 
 /* coverflow */
 .flow{position:relative;height:min(56vh,440px);perspective:1200px;transform-style:preserve-3d;margin-top:1rem;touch-action:pan-y}
-.frame{position:absolute;left:50%;top:50%;width:min(46vw,300px);aspect-ratio:3/4;margin:calc(min(46vw,300px)*-.667) 0 0 calc(min(46vw,300px)*-.5);border-radius:18px;overflow:hidden;border:8px solid #fff;box-shadow:0 30px 60px #3a122455;transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .8s;cursor:pointer;background:var(--blush)}
+.frame{position:absolute;left:50%;top:50%;width:min(46vw,300px);aspect-ratio:3/4;margin:calc(min(46vw,300px)*-.667) 0 0 calc(min(46vw,300px)*-.5);border-radius:18px;overflow:hidden;border:8px solid #f6f1e7;box-shadow:0 20px 44px #34483b66,0 6px 16px #34483b38;transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .8s;cursor:pointer;background:var(--blush)}
 .frame img{width:100%;height:100%;object-fit:cover}
 .ph{height:100%;display:grid;place-content:center;gap:.4rem;color:var(--rose);padding:1rem;background:linear-gradient(160deg,#fff,#fbd8de)}.ph b{font-size:2.4rem;animation:beat 1.5s infinite}.ph em{font-family:var(--script);font-size:2rem;color:var(--wine)}.ph small{font-size:.8rem;opacity:.7}
 .fn{position:absolute;top:50%;translate:0 -50%;z-index:20;width:46px;height:46px;border-radius:50%;border:0;background:#fffd;color:var(--wine);font-size:1.8rem;cursor:pointer}.fn.l{left:0}.fn.r{right:0}
