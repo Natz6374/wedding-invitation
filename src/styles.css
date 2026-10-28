@@ -286,7 +286,8 @@ h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.6rem,5.7vw,5re
 
 /* Updated Family text colors for #AA5E7A background */
 .paper{border-radius:180px 180px 18px 18px;background:#ffffff25;border:1px solid #ffffff40;padding:42px 50px 28px;box-shadow:0 20px 70px #00000020;color:#fff1ec;backdrop-filter:blur(12px)}
-.family .script{color:#fff1ec;margin:10px auto 22px}
+.family .script{color:#fff1ec;margin:10px auto 12px}
+.family-divider{width:min(190px,48vw);height:3px;background:#c99a6b;margin:0 auto 18px;border:0;border-radius:99px}
 .parents{font-family:'Playfair Display',serif;font-size:1.06rem;color:#fff1ec}
 .detail{font-size:.88rem;line-height:1.7}
 .family .detail{color:#fff1ec;margin:4px auto}
