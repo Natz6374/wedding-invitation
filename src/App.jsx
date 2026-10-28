@@ -173,7 +173,7 @@ export default function App(){
    <section ref={R(2)} className={cls(2)} aria-hidden={p!==2} inert={p!==2?'':undefined}><div className="c paper family">
     <p className="eyebrow a">WITH OUR FAMILIES, WITH ALL OUR LOVE</p><h2 className="script a" style={{'--i':1}}>With joy, we invite you</h2>
     <p className="invite-copy a" style={{'--i':2}}>Together with our family,<br/>we cordially invite you and your loved ones<br/>to join us in celebrating the wedding of our beloved son,</p>
-    <div className="family-names stack a" style={{'--i':3}}><h3>Dr. R. Adolph Rijo</h3><span>with</span><h3>Dr. Jenisha T. A.</h3></div>
+    <div className="family-names stack a" style={{'--i':3}}><h3>Dr. R. Adolph Rijo</h3><span>with</span><h3>Dr. T.A.Jenisha</h3></div>
     <p className="a detail" style={{'--i':4}}>Daughter of</p><p className="parents a" style={{'--i':4}}>Mr. R. Thomson &amp; Mrs. S. Anitha</p><p className="detail a" style={{'--i':4}}>Mangarai Post.</p>
     <p className="family-foot a" style={{'--i':5}}>Your gracious presence and blessings will make this joyous occasion even more special as the couple begins their beautiful journey of togetherness.</p>
    </div></section>
