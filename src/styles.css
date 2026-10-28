@@ -474,3 +474,4 @@ h1,.script,.couple h2,.family-names h3,.closing h3{
   .family .invite-copy{font-size:.96rem}
   .family-names h3{font-size:1.42rem}
 }
+.family .family-hosts{font-size:clamp(.95rem,1.8vw,1.15rem);font-weight:700;letter-spacing:.12em;line-height:1.55}
