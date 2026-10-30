@@ -286,7 +286,7 @@ h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.6rem,5.7vw,5re
 
 /* Updated Family text colors for #AA5E7A background */
 .paper{border-radius:180px 180px 18px 18px;background:#ffffff25;border:1px solid #ffffff40;padding:42px 50px 28px;box-shadow:0 20px 70px #00000020;color:#fff1ec;backdrop-filter:blur(12px)}
-.family .script{color:#fff1ec;margin:10px auto 12px}
+.family .script{font-family:'Playfair Display',Georgia,serif;color:#fff1ec;font-size:clamp(1.8rem,3.2vw,2.7rem);font-weight:500;line-height:1.25;margin:10px auto 12px}
 .family-divider{width:min(190px,48vw);height:3px;background:#c99a6b;margin:0 auto 18px;border:0;border-radius:99px}
 .parents{font-family:'Playfair Display',serif;font-size:1.06rem;color:#fff1ec}
 .detail{font-size:.88rem;line-height:1.7}
@@ -359,7 +359,7 @@ h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.6rem,5.7vw,5re
 @media(max-width:700px){
   .page{padding:95px 20px 102px}.page::before{inset:9px;border-radius:85px 85px 10px 10px}
   .couple{flex-direction:column;gap:5px;margin:14px auto}.couple h2{font-size:1.9rem}.couple small{display:inline}.couple em{font-size:1.8rem;line-height:1}.linked-hearts{height:68px}.tagline{font-size:1.8rem}.cover-note{font-size:.95rem}.date-ribbon{gap:10px;font-size:.53rem;margin:16px auto}
-  .paper{padding:30px 20px 24px;border-radius:90px 90px 16px 16px}.family-names{flex-direction:column;gap:3px}.family-names h3{font-size:1.65rem}.family .script{font-size:2.5rem}.family .parents{font-size:.94rem}.family .detail{font-size:.79rem}.family .invite-copy{font-size:.94rem}
+  .paper{padding:30px 20px 24px;border-radius:90px 90px 16px 16px}.family-names{flex-direction:column;gap:3px}.family-names h3{font-size:1.65rem}.family .script{font-size:1.65rem}.family .parents{font-size:.94rem}.family .detail{font-size:.79rem}.family .invite-copy{font-size:.94rem}
 
   .events-page>.script{font-size:clamp(1.9rem,8vw,2.5rem)}
   .event-intro{font-size:1rem;margin:6px auto 18px!important}

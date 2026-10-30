@@ -171,7 +171,7 @@ export default function App(){
     <p className="ta a" lang="ta" style={{'--i':4}}>இனி அவர்கள் இருவர் அல்ல, ஒரே உடல்; எனவே இறைவன் இணைத்ததை மனிதர் பிரிக்காதிருக்கட்டும் (மத். <span className="verse-ref-number">19:6</span>)</p>
    </div></section>
    <section ref={R(2)} className={cls(2)} aria-hidden={p!==2} inert={p!==2?'':undefined}><div className="c paper family">
-    <p className="eyebrow family-hosts a">Er. A. Raj &amp; M. Rejini Vijila Bai</p><h2 className="script a" style={{'--i':1}}>With joy, we invite you</h2>
+    <h2 className="script a" style={{'--i':1}}>Er. A. Raj &amp; M. Rejini Vijila Bai</h2>
     <div className="family-divider a" style={{'--i':1.5}} aria-hidden="true"></div>
     <p className="invite-copy a" style={{'--i':2}}>Together with our families,<br/>we cordially invite you and your loved ones<br/>to join us in celebrating the wedding of our beloved son,</p>
     <div className="family-names stack a" style={{'--i':3}}><h3>Dr. R. Adolph Rijo</h3><span>with</span><h3>Dr. T. A. Jenisha</h3></div>
