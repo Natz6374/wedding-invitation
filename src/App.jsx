@@ -179,7 +179,7 @@ export default function App(){
     <p className="family-foot a" style={{'--i':5}}>Your gracious presence and blessings will make this joyous occasion even more special as the couple begins their beautiful journey of togetherness.</p>
    </div></section>
    <section ref={R(3)} className={cls(3)} aria-hidden={p!==3} inert={p!==3?'':undefined}><div className="c wide events-page">
-    <p className="eyebrow a">A CELEBRATION OF LOVE</p><h2 className="script a" style={{'--i':1}}>Our two days of joy</h2><p className="a event-intro" style={{'--i':1}}>The celebrations · Find your way to us</p>
+    <p className="eyebrow a">A CELEBRATION OF LOVE</p><h2 className="script a" style={{'--i':1}}>A beautiful beginning forever</h2><p className="a event-intro" style={{'--i':1}}>The celebrations · Find your way to us</p>
     <div className="event-grid">{EVENTS.map((e,k)=><article className="event-card a" key={e.title} style={{'--i':k+2}}>
       <div className="event-top"><Iso k={e.icon}/></div>
       <div className="event-content">
