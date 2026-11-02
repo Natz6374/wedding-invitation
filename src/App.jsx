@@ -5,8 +5,8 @@ import FloralCorners from './FloralCorners.jsx';
 const WEDDING=new Date('2026-11-30T10:00:00+05:30');
 const MOMENTS=['/photos/DSC00006.JPG.jpeg','/photos/DSC00421 0001.jpg.jpeg','/photos/DSC01713.JPG.jpeg','/photos/DSC02829.JPG.jpeg'];
 const EVENTS=[
- {day:'Sun, 29 Nov 2026',time:'5:00 pm',title:'Engagement',place:'CSI Community Hall, Karunkal',note:'Solemnized by Most. Rev. Vincent Mar Paulos, Diocese of Marthandam.',map:'CSI Community Hall Karunkal',icon:'ring'},
- {day:'Mon, 30 Nov 2026',time:'10:00 am',title:'Wedding Ceremony',place:"St. Antony’s Church, Mullanganavilai",note:'Solemnized by Most. Rev. Dr. Albert G.A. Annasdas, Diocese of Kuzhithurai',map:'St Antony Church Mullanganavilai',icon:'church'},
+ {day:'Sun, 29 Nov 2026',time:'5:00 pm',title:'Engagement',place:'CSI Community Hall, Karunkal',officiant:'Solemnized by Most. Rev. Vincent Mar Paulos',diocese:'Diocese of Marthandam',map:'CSI Community Hall Karunkal',icon:'ring'},
+ {day:'Mon, 30 Nov 2026',time:'10:00 am',title:'Wedding Ceremony',place:"St. Antony’s Church, Mullanganavilai",officiant:'Solemnized by Most. Rev. Dr. Albert G.A. Annasdas',diocese:'Diocese of Kuzhithurai',map:'St Antony Church Mullanganavilai',icon:'church'},
  {day:'Mon, 30 Nov 2026',time:'5:00 pm',title:'Reception',place:'J.C. Grand Community Hall, Puthankadai, Thiruvattar',map:'JC Grand Community Hall Thiruvattar',icon:'toast'}];
 const LAST=5, THEME=[1,1,1,1,1,1];
 function useCountdown(){
@@ -187,7 +187,7 @@ export default function App(){
         <p className="event-time">{e.time}</p>
         <div className="event-rule"/>
         <p className="event-place">{e.place}</p>
-        {e.note&&<p className="detail officiant">{e.note}</p>}
+        {e.officiant&&<p className="detail officiant">{e.officiant}<br/>{e.diocese}</p>}
         <div className="directions"><QR q={e.map}/><a className="map-link" href={'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(e.map)} target="_blank" rel="noreferrer">Get directions ↗<small>Tap or scan to find us</small></a></div>
       </div>
     </article>)}</div>
